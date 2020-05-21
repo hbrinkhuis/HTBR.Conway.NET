@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conway.Engine.Tests", "Conway.Engine.Tests\Conway.Engine.Tests.csproj", "{B0494C35-E3B7-48F3-8335-EC139C305988}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0494C35-E3B7-48F3-8335-EC139C305988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0494C35-E3B7-48F3-8335-EC139C305988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0494C35-E3B7-48F3-8335-EC139C305988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0494C35-E3B7-48F3-8335-EC139C305988}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E01FF200-2971-4284-B61A-F6B67E2CD616}
+	EndGlobalSection
+EndGlobal
