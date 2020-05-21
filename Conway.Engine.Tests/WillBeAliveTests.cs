@@ -43,6 +43,11 @@ namespace Conway.Engine.Tests
 
         private bool WillBeAlive(int x, int y, int z, bool[,,] matrix)
         {
+            return NumberOfNeighbours(x, y, z, _matrix) >= MinimumNumberOfNeighboursToBecomeAlive;
+        }
+
+        private int NumberOfNeighbours(int x, int y, int z, bool[,,] matrix)
+        {
             int numberOfNeighbours = 0;
             for (int i = x - 1; i < x + 2; i++)
             {
@@ -55,7 +60,8 @@ namespace Conway.Engine.Tests
                     }
                 }
             }
-            return numberOfNeighbours >= MinimumNumberOfNeighboursToBecomeAlive;
+
+            return numberOfNeighbours;
         }
     }
 }
