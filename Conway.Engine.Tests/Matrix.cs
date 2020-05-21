@@ -55,5 +55,10 @@ namespace Conway.Engine.Tests
         {
             _matrix[x, y, z] = true;
         }
+
+        public bool GetCell(int x, int y, int z)
+        {
+            return _matrix[x, y, z];
+        }
     }
 }

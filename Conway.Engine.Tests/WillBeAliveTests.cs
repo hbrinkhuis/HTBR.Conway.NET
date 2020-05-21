@@ -16,6 +16,11 @@ namespace Conway.Engine.Tests
 
         private bool ReturnStatusOfCenterCell() => _matrix.WillBeAlive(1, 1, 1);
 
+        private void SetCenterCell()
+        {
+            _matrix.SetCell(1, 1, 1);
+        }
+
         [Test]
         public void DeadWithoutNeighbours_StillDead()
         {
@@ -23,7 +28,7 @@ namespace Conway.Engine.Tests
         }
 
         [Test]
-        public void DeadWithNineNeighbourse_Alive()
+        public void DeadWithNineNeighbours_Alive()
         {
             _matrix.SetCell(0, 0, 0);
             _matrix.SetCell(0, 0, 1);
@@ -36,6 +41,14 @@ namespace Conway.Engine.Tests
             _matrix.SetCell(2, 0, 2);
 
             ReturnStatusOfCenterCell().Should().BeTrue();
+        }
+
+        [Test]
+        public void AliveWithNoNeighbours_Dies()
+        {
+            SetCenterCell();
+
+            ReturnStatusOfCenterCell().Should().BeFalse();
         }
     }
 }

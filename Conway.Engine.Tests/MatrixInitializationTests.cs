@@ -26,5 +26,13 @@ namespace Conway.Engine.Tests
 
             _matrix.IsEmpty().Should().BeFalse();
         }
+
+        [Test]
+        public void SetCell_CellSetCorrectly()
+        {
+            _matrix.SetCell(0, 0, 0);
+
+            _matrix.GetCell(0, 0, 0).Should().BeTrue();
+        }
     }
 }
