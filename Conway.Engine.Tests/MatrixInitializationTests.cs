@@ -22,7 +22,7 @@ namespace Conway.Engine.Tests
         [Test]
         public void SetCell_NoLongerEmpty()
         {
-            _matrix.SetCell(0, 0, 0);
+            _matrix.SetCell(0, 0);
 
             _matrix.IsEmpty().Should().BeFalse();
         }
@@ -30,9 +30,9 @@ namespace Conway.Engine.Tests
         [Test]
         public void SetCell_CellSetCorrectly()
         {
-            _matrix.SetCell(0, 0, 0);
+            _matrix.SetCell(0, 0);
 
-            _matrix.GetCell(0, 0, 0).Should().BeTrue();
+            _matrix.GetCell(0, 0).Should().BeTrue();
         }
     }
 }
