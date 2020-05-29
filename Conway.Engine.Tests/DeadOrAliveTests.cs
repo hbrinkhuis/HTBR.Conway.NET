@@ -1,21 +1,19 @@
-using NUnit.Framework;
-
 namespace Conway.Engine.Tests
 {
+    using NUnit.Framework;
     using FluentAssertions;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
-    public class WillBeAliveTests
+    public class DeadOrAliveTests
     {
         private Matrix _matrix;
 
         [SetUp]
         public void Setup()
         {
-            _matrix = new Matrix();
+            _matrix = new Matrix(3, 3);
         }
 
         private bool ReturnStatusOfCenterCell() => _matrix.WillBeAlive(1, 1);
