@@ -1,5 +1,9 @@
 namespace Conway.Engine.Tests
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Security.Cryptography.X509Certificates;
+
     public class Matrix
     {
         private const int MinimumNumberOfNeighboursToBecomeAlive = 3;
@@ -7,9 +11,9 @@ namespace Conway.Engine.Tests
         private const int TooManyNeighboursToStayAlive = 4;
         private bool[,] _matrix;
 
-        public Matrix()
+        public Matrix(uint rows, uint columns)
         {
-            _matrix = new bool[3, 3];
+            _matrix = new bool[rows, columns];
         }
 
         public bool WillBeAlive(int x, int y)
@@ -66,6 +70,20 @@ namespace Conway.Engine.Tests
         public bool GetCell(int x, int y)
         {
             return _matrix[x, y];
+        }
+
+        public void Init(IEnumerable<(int x, int y)> initMatrix)
+        {
+            foreach ((int x, int y) in initMatrix)
+            {
+                if(IsWithinBounds(x, y))
+                    SetCell(x, y);
+            }
+        }
+
+        public bool IsWithinBounds(int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < _matrix.GetLength(0) && y < _matrix.GetLength(1);
         }
     }
 }

@@ -2,6 +2,7 @@ namespace Conway.Engine.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using NUnit.Framework.Internal;
 
     public class MatrixInitializationTests
     {
@@ -10,7 +11,7 @@ namespace Conway.Engine.Tests
         [SetUp]
         public void Setup()
         {
-            _matrix = new Matrix();
+            _matrix = new Matrix(3, 3);
         }
 
         [Test]
@@ -33,6 +34,22 @@ namespace Conway.Engine.Tests
             _matrix.SetCell(0, 0);
 
             _matrix.GetCell(0, 0).Should().BeTrue();
+        }
+
+        [Test]
+        public void Init_CellsSetCorrectly()
+        {
+            var initMatrix = new[]
+            {
+                (1, 2),
+                (1, 0),
+                (25, 4),
+                (-1, 1)
+            };
+            _matrix.Init(initMatrix);
+
+            _matrix.IsAlive(1, 2).Should().BeTrue();
+            _matrix.IsAlive(1, 0).Should().BeTrue();
         }
     }
 }
