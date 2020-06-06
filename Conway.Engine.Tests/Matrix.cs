@@ -4,9 +4,6 @@ namespace Conway.Engine.Tests
  
     public class Matrix
     {
-        private const int NumberOfNeighboursToBecomeAlive = 3;
-        private const int TooLittleNeighboursToStayAlive = 1;
-        private const int TooManyNeighboursToStayAlive = 4;
         private bool[,] _matrix;
 
         public Matrix(int rows, int columns)
@@ -47,18 +44,7 @@ namespace Conway.Engine.Tests
             {
                 if (cell.alive)
                     yield return (cell.x, cell.y);
-            };
-        }
-
-        public bool WillBeAlive(int x, int y)
-        {
-            int numberOfLivingNeighbours = NumberOfLivingNeighbours(x, y);
-            if (IsAlive(x, y))
-            {
-                return numberOfLivingNeighbours > TooLittleNeighboursToStayAlive && numberOfLivingNeighbours < TooManyNeighboursToStayAlive;
             }
-
-            return numberOfLivingNeighbours == NumberOfNeighboursToBecomeAlive;
         }
 
         public bool IsAlive(int x, int y)
@@ -84,21 +70,6 @@ namespace Conway.Engine.Tests
         public bool IsInMatrix(int x, int y)
         {
             return x >= 0 && y >= 0 && x < _matrix.GetLength(0) && y < _matrix.GetLength(1);
-        }
-
-        private int NumberOfLivingNeighbours(int x, int y)
-        {
-            int numberOfNeighbours = 0;
-            for (int i = x - 1; i < x + 2; i++)
-            {
-                for (int j = y - 1; j < y + 2; j++)
-                {
-                    if (IsInMatrix(i, j) && _matrix[i, j] && !(i == x && j == y))
-                        numberOfNeighbours++;
-                }
-            }
-
-            return numberOfNeighbours;
         }
 
         private void Clear()

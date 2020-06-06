@@ -2,7 +2,6 @@ namespace Conway.Engine.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using System.Linq;
 
     public class MatrixInitializationTests
     {
@@ -39,7 +38,7 @@ namespace Conway.Engine.Tests
         [Test]
         public void Init_CellsSetCorrectly()
         {
-            (int, int)[] initMatrix = new[]
+            (int, int)[] initMatrix =
             {
                 (1, 2),
                 (1, 0),

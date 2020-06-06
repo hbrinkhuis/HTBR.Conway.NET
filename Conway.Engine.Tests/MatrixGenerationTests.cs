@@ -1,8 +1,9 @@
 namespace Conway.Engine.Tests
 {
+    using AutoFixture;
     using FluentAssertions;
     using NUnit.Framework;
-    using System.Linq;
+    using System.Diagnostics;
 
     [TestFixture]
     public class MatrixGenerationTests
@@ -35,26 +36,21 @@ namespace Conway.Engine.Tests
                     (1, 3)
                 });
         }
-    }
 
-    public class FrameGenerator
-    {
-        private readonly Matrix _matrix;
-
-        public FrameGenerator(Matrix matrix)
+        [Test]
+        public void PerformanceTest_EmptyFrame()
         {
-            _matrix = matrix;
-        }
+            var matrix = new Matrix(1000, 1000);
 
-        public void ApplyNextFrame()
-        {
-            var nextMatrix = _matrix.EmptyClone();
-            foreach ((int x, int y, bool _) in _matrix.GetCells())
+            var sut = new FrameGenerator(matrix);
+            Stopwatch s = new Stopwatch();
+            s.Start();
+            for (int i = 0; i < 60; i++)
             {
-                if(_matrix.WillBeAlive(x, y))
-                    nextMatrix.SetCell(x, y);
+                sut.ApplyNextFrame();
             }
-            _matrix.Init(nextMatrix.GetLivingCells());
+            s.Stop();
+            TestContext.Out.WriteLine($"Elapsed ms for {60} frames: {s.ElapsedMilliseconds}");
         }
     }
 }

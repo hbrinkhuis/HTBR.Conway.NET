@@ -9,14 +9,16 @@ namespace Conway.Engine.Tests
     public class DeadOrAliveTests
     {
         private Matrix _matrix;
+        private FrameGenerator _frameGen;
 
         [SetUp]
         public void Setup()
         {
             _matrix = new Matrix(3, 3);
+            _frameGen = new FrameGenerator(_matrix);
         }
 
-        private bool ReturnStatusOfCenterCell() => _matrix.WillBeAlive(1, 1);
+        private bool ReturnStatusOfCenterCell() => _frameGen.WillBeAlive(1, 1);
 
         private void SetCenterCell()
         {
