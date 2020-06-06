@@ -48,10 +48,13 @@ namespace Conway.Engine.Tests
 
         public void ApplyNextFrame()
         {
-            foreach (var cell in _matrix.GetCells())
+            var nextMatrix = _matrix.EmptyClone();
+            foreach ((int x, int y, bool _) in _matrix.GetCells())
             {
-                _matrix.WillBeAlive(cell.x, cell.y);
+                if(_matrix.WillBeAlive(x, y))
+                    nextMatrix.SetCell(x, y);
             }
+            _matrix.Init(nextMatrix.GetLivingCells());
         }
     }
 }

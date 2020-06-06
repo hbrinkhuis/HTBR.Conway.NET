@@ -16,6 +16,7 @@ namespace Conway.Engine.Tests
 
         public void Init(IEnumerable<(int x, int y)> initMatrix)
         {
+            Clear();
             foreach ((int x, int y) in initMatrix)
             {
                 if (IsInMatrix(x, y))
@@ -100,12 +101,14 @@ namespace Conway.Engine.Tests
             return numberOfNeighbours;
         }
 
-        public Matrix Clone()
+        private void Clear()
         {
-            var clone = new Matrix(_matrix.GetLength(0), _matrix.GetLength(1));
-            clone.Init(GetLivingCells());
+            _matrix = new bool[_matrix.GetLength(0), _matrix.GetLength(1)];
+        }
 
-            return clone;
+        public Matrix EmptyClone()
+        {
+            return new Matrix(_matrix.GetLength(0), _matrix.GetLength(1));
         }
     }
 }

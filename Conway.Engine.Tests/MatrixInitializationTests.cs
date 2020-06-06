@@ -64,7 +64,8 @@ namespace Conway.Engine.Tests
             };
             _matrix.Init(initMatrix);
 
-            var clone = _matrix.Clone();
+            var clone = _matrix.EmptyClone();
+            clone.GetLivingCells().Should().BeEmpty();
 
             clone.SetCell(1,1);
             _matrix.IsAlive(1, 1).Should().BeFalse();
