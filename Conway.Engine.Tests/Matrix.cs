@@ -1,15 +1,15 @@
 namespace Conway.Engine.Tests
 {
     using System.Collections.Generic;
-
+ 
     public class Matrix
     {
-        private const int MinimumNumberOfNeighboursToBecomeAlive = 3;
+        private const int NumberOfNeighboursToBecomeAlive = 3;
         private const int TooLittleNeighboursToStayAlive = 1;
         private const int TooManyNeighboursToStayAlive = 4;
         private bool[,] _matrix;
 
-        public Matrix(uint rows, uint columns)
+        public Matrix(int rows, int columns)
         {
             _matrix = new bool[rows, columns];
         }
@@ -40,6 +40,15 @@ namespace Conway.Engine.Tests
             }
         }
 
+        public IEnumerable<(int x, int y)> GetLivingCells()
+        {
+            foreach (var cell in GetCells())
+            {
+                if (cell.alive)
+                    yield return (cell.x, cell.y);
+            };
+        }
+
         public bool WillBeAlive(int x, int y)
         {
             int numberOfLivingNeighbours = NumberOfLivingNeighbours(x, y);
@@ -48,7 +57,7 @@ namespace Conway.Engine.Tests
                 return numberOfLivingNeighbours > TooLittleNeighboursToStayAlive && numberOfLivingNeighbours < TooManyNeighboursToStayAlive;
             }
 
-            return numberOfLivingNeighbours >= MinimumNumberOfNeighboursToBecomeAlive;
+            return numberOfLivingNeighbours == NumberOfNeighboursToBecomeAlive;
         }
 
         public bool IsAlive(int x, int y)
@@ -89,6 +98,14 @@ namespace Conway.Engine.Tests
             }
 
             return numberOfNeighbours;
+        }
+
+        public Matrix Clone()
+        {
+            var clone = new Matrix(_matrix.GetLength(0), _matrix.GetLength(1));
+            clone.Init(GetLivingCells());
+
+            return clone;
         }
     }
 }

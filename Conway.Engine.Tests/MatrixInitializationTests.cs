@@ -2,7 +2,6 @@ namespace Conway.Engine.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using NUnit.Framework.Internal;
     using System.Linq;
 
     public class MatrixInitializationTests
@@ -40,7 +39,7 @@ namespace Conway.Engine.Tests
         [Test]
         public void Init_CellsSetCorrectly()
         {
-            var initMatrix = new[]
+            (int, int)[] initMatrix = new[]
             {
                 (1, 2),
                 (1, 0),
@@ -54,20 +53,37 @@ namespace Conway.Engine.Tests
         }
 
         [Test]
-        public void IsWithinBounds()
+        public void Clone_IsAClone()
         {
-            _matrix.IsWithinBounds(-1, 0).Should().BeFalse();
-            _matrix.IsWithinBounds(-1, -1).Should().BeFalse();
-            _matrix.IsWithinBounds(2, -1).Should().BeFalse();
-            _matrix.IsWithinBounds(-1, 2).Should().BeFalse();
-            _matrix.IsWithinBounds(1, 2).Should().BeTrue();
-            _matrix.IsWithinBounds(2, 1).Should().BeTrue();
-            _matrix.IsWithinBounds(0, 0).Should().BeTrue();
-            _matrix.IsWithinBounds(0, 3).Should().BeFalse();
-            _matrix.IsWithinBounds(3, 3).Should().BeFalse();
-            _matrix.IsWithinBounds(3, 0).Should().BeFalse();
+            (int, int)[] initMatrix = new[]
+            {
+                (1, 2),
+                (1, 0),
+                (25, 4),
+                (-1, 1)
+            };
+            _matrix.Init(initMatrix);
+
+            var clone = _matrix.Clone();
+
+            clone.SetCell(1,1);
+            _matrix.IsAlive(1, 1).Should().BeFalse();
         }
 
+        [Test]
+        public void IsWithinBounds()
+        {
+            _matrix.IsInMatrix(-1, 0).Should().BeFalse();
+            _matrix.IsInMatrix(-1, -1).Should().BeFalse();
+            _matrix.IsInMatrix(2, -1).Should().BeFalse();
+            _matrix.IsInMatrix(-1, 2).Should().BeFalse();
+            _matrix.IsInMatrix(1, 2).Should().BeTrue();
+            _matrix.IsInMatrix(2, 1).Should().BeTrue();
+            _matrix.IsInMatrix(0, 0).Should().BeTrue();
+            _matrix.IsInMatrix(0, 3).Should().BeFalse();
+            _matrix.IsInMatrix(3, 3).Should().BeFalse();
+            _matrix.IsInMatrix(3, 0).Should().BeFalse();
+        }
 
         [Test]
         public void GetAllLivingCells_ShouldReturnGlider()
@@ -83,13 +99,13 @@ namespace Conway.Engine.Tests
             _matrix.SetCell(1, 2);
             _matrix.SetCell(2, 2);
 
-            _matrix.GetCells().Where(c => c.alive).Should().BeEquivalentTo(new[]
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new[]
             {
-                (1, 0, true),
-                (2, 1, true),
-                (0, 2, true),
-                (1, 2, true),
-                (2, 2, true),
+                (1, 0),
+                (2, 1),
+                (0, 2),
+                (1, 2),
+                (2, 2),
             });
         }
     }
