@@ -1,8 +1,6 @@
 namespace Conway.Engine.Tests
 {
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Security.Cryptography.X509Certificates;
 
     public class Matrix
     {
@@ -16,35 +14,46 @@ namespace Conway.Engine.Tests
             _matrix = new bool[rows, columns];
         }
 
+        public void Init(IEnumerable<(int x, int y)> initMatrix)
+        {
+            foreach ((int x, int y) in initMatrix)
+            {
+                if (IsInMatrix(x, y))
+                    SetCell(x, y);
+            }
+        }
+
+        public void SetCell(int x, int y)
+        {
+            _matrix[x, y] = true;
+        }
+
+        public IEnumerable<(int x, int y, bool alive)> GetCells()
+        {
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
+                {
+                    bool isAlive = IsAlive(i, j);
+                    yield return (i, j, isAlive);
+                }
+            }
+        }
+
         public bool WillBeAlive(int x, int y)
         {
-            int numberOfNeighbours = NumberOfNeighbours(x, y);
+            int numberOfLivingNeighbours = NumberOfLivingNeighbours(x, y);
             if (IsAlive(x, y))
             {
-                return numberOfNeighbours > TooLittleNeighboursToStayAlive && numberOfNeighbours < TooManyNeighboursToStayAlive;
+                return numberOfLivingNeighbours > TooLittleNeighboursToStayAlive && numberOfLivingNeighbours < TooManyNeighboursToStayAlive;
             }
 
-            return numberOfNeighbours >= MinimumNumberOfNeighboursToBecomeAlive;
+            return numberOfLivingNeighbours >= MinimumNumberOfNeighboursToBecomeAlive;
         }
 
         public bool IsAlive(int x, int y)
         {
-            return _matrix[x, y];
-        }
-
-        private int NumberOfNeighbours(int x, int y)
-        {
-            int numberOfNeighbours = 0;
-            for (int i = x - 1; i < x + 2; i++)
-            {
-                for (int j = y - 1; j < y + 2; j++)
-                {
-                    if (_matrix[i, j] && !(i == x && j == y))
-                        numberOfNeighbours++;
-                }
-            }
-
-            return numberOfNeighbours;
+            return IsInMatrix(x, y) && _matrix[x, y];
         }
 
         public bool IsEmpty()
@@ -54,7 +63,7 @@ namespace Conway.Engine.Tests
             {
                 for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    if (_matrix[i, j])
+                    if (IsInMatrix(i,j) && _matrix[i, j])
                             return false;
                 }
             }
@@ -62,28 +71,24 @@ namespace Conway.Engine.Tests
             return true;
         }
 
-        public void SetCell(int x, int y)
-        {
-            _matrix[x, y] = true;
-        }
-
-        public bool GetCell(int x, int y)
-        {
-            return _matrix[x, y];
-        }
-
-        public void Init(IEnumerable<(int x, int y)> initMatrix)
-        {
-            foreach ((int x, int y) in initMatrix)
-            {
-                if(IsWithinBounds(x, y))
-                    SetCell(x, y);
-            }
-        }
-
-        public bool IsWithinBounds(int x, int y)
+        public bool IsInMatrix(int x, int y)
         {
             return x >= 0 && y >= 0 && x < _matrix.GetLength(0) && y < _matrix.GetLength(1);
+        }
+
+        private int NumberOfLivingNeighbours(int x, int y)
+        {
+            int numberOfNeighbours = 0;
+            for (int i = x - 1; i < x + 2; i++)
+            {
+                for (int j = y - 1; j < y + 2; j++)
+                {
+                    if (IsInMatrix(i, j) && _matrix[i, j] && !(i == x && j == y))
+                        numberOfNeighbours++;
+                }
+            }
+
+            return numberOfNeighbours;
         }
     }
 }

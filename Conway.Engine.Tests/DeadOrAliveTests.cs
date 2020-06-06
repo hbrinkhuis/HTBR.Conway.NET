@@ -35,7 +35,6 @@ namespace Conway.Engine.Tests
             }
         }
 
-
         [Test]
         public void DeadWithoutNeighbours_StillDead()
         {

@@ -3,6 +3,7 @@ namespace Conway.Engine.Tests
     using FluentAssertions;
     using NUnit.Framework;
     using NUnit.Framework.Internal;
+    using System.Linq;
 
     public class MatrixInitializationTests
     {
@@ -33,7 +34,7 @@ namespace Conway.Engine.Tests
         {
             _matrix.SetCell(0, 0);
 
-            _matrix.GetCell(0, 0).Should().BeTrue();
+            _matrix.IsAlive(0, 0).Should().BeTrue();
         }
 
         [Test]
@@ -50,6 +51,46 @@ namespace Conway.Engine.Tests
 
             _matrix.IsAlive(1, 2).Should().BeTrue();
             _matrix.IsAlive(1, 0).Should().BeTrue();
+        }
+
+        [Test]
+        public void IsWithinBounds()
+        {
+            _matrix.IsWithinBounds(-1, 0).Should().BeFalse();
+            _matrix.IsWithinBounds(-1, -1).Should().BeFalse();
+            _matrix.IsWithinBounds(2, -1).Should().BeFalse();
+            _matrix.IsWithinBounds(-1, 2).Should().BeFalse();
+            _matrix.IsWithinBounds(1, 2).Should().BeTrue();
+            _matrix.IsWithinBounds(2, 1).Should().BeTrue();
+            _matrix.IsWithinBounds(0, 0).Should().BeTrue();
+            _matrix.IsWithinBounds(0, 3).Should().BeFalse();
+            _matrix.IsWithinBounds(3, 3).Should().BeFalse();
+            _matrix.IsWithinBounds(3, 0).Should().BeFalse();
+        }
+
+
+        [Test]
+        public void GetAllLivingCells_ShouldReturnGlider()
+        {
+            // we'll use a glider for this
+            _matrix = new Matrix(10, 10);
+
+            _matrix.SetCell(1, 0);
+
+            _matrix.SetCell(2, 1);
+
+            _matrix.SetCell(0, 2);
+            _matrix.SetCell(1, 2);
+            _matrix.SetCell(2, 2);
+
+            _matrix.GetCells().Where(c => c.alive).Should().BeEquivalentTo(new[]
+            {
+                (1, 0, true),
+                (2, 1, true),
+                (0, 2, true),
+                (1, 2, true),
+                (2, 2, true),
+            });
         }
     }
 }
