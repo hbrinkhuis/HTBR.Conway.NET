@@ -10,31 +10,22 @@ namespace Conway.Engine.Tests
     {
         private Matrix _matrix;
         private FrameGenerator _frameGen;
+        private Cell _centerCell;
 
         [SetUp]
         public void Setup()
         {
             _matrix = new Matrix(3, 3);
             _frameGen = new FrameGenerator(_matrix);
+            _centerCell = new Cell(1, 1);
         }
 
-        private bool ReturnStatusOfCenterCell() => _frameGen.WillBeAlive(1, 1);
+        private bool ReturnStatusOfCenterCell() => _frameGen.WillStayAlive(_centerCell);
 
-        private void SetCenterCell()
+        private void SetCells(IEnumerable<Cell> cells)
         {
-            _matrix.SetCell(1, 1);
-        }
-
-        private void SetCells(ICollection<(int x, int y)> cellTuples)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if(cellTuples.Any(t => t.x == i && t.y == j))
-                        _matrix.SetCell(i, j);
-                }
-            }
+            foreach(var cell in cells)
+                _matrix.AddCell(cell);
         }
 
         [Test]
@@ -46,30 +37,30 @@ namespace Conway.Engine.Tests
         [Test]
         public void DeadWithThreeNeighbours_Alive()
         {
-            _matrix.SetCell(0, 0);
-            _matrix.SetCell(0, 1);
-            _matrix.SetCell(0, 2);
+            _matrix.AddCell(new Cell(0, 0));
+            _matrix.AddCell(new Cell(0, 1));
+            _matrix.AddCell(new Cell(0, 2));
 
             ReturnStatusOfCenterCell().Should().BeTrue();
         }
 
         [TestCaseSource(typeof(NeighbourCases), nameof(NeighbourCases.TooLittleNeighbours))]
-        public bool AliveWithTooFewNeighbours_Dies(ICollection<(int x, int y)> neighbours)
+        public bool AliveWithTooFewNeighbours_Dies(ICollection<Cell> neighbours)
         {
             SetCells(neighbours);
 
-            SetCenterCell();
+            _matrix.AddCell(_centerCell);
 
             return ReturnStatusOfCenterCell();
         }
 
 
         [TestCaseSource(typeof(NeighbourCases), nameof(NeighbourCases.TooMuchNeighbours))]
-        public bool AliveWithTooManyNeighbours_Dies(ICollection<(int x, int y)> neighbours)
+        public bool AliveWithTooManyNeighbours_Dies(ICollection<Cell> neighbours)
         {
             SetCells(neighbours);
 
-            SetCenterCell();
+            _matrix.AddCell(_centerCell);
 
             return ReturnStatusOfCenterCell();
         }
@@ -82,9 +73,9 @@ namespace Conway.Engine.Tests
                 get
                 {
                     // TODO yeah let's refactor this
-                    yield return new TestCaseData(new List<(int x, int y)> { }).Returns(false);
-                    yield return new TestCaseData(new List<(int x, int y)> {(0, 1)}).Returns(false);
-                    yield return new TestCaseData(new List<(int x, int y)> {(2, 0)}).Returns(false);
+                    yield return new TestCaseData(new List<Cell>()).Returns(false);
+                    yield return new TestCaseData(new List<Cell> {new Cell(0, 1)}).Returns(false);
+                    yield return new TestCaseData(new List<Cell> {new Cell(2, 0)}).Returns(false);
                 }
             }
 
@@ -93,7 +84,7 @@ namespace Conway.Engine.Tests
                 get
                 {
                     // TODO yeah let's refactor this
-                    yield return new TestCaseData(new List<(int x, int y)> { (0, 0), (1, 0), (1, 2), (2, 2) }).Returns(false);
+                    yield return new TestCaseData(new List<Cell> { new Cell(0, 0), new Cell(1, 0), new Cell(1, 2), new Cell(2, 2)}).Returns(false);
                 }
             }
         }

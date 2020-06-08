@@ -1,85 +1,75 @@
 namespace Conway.Engine.Tests
 {
     using System.Collections.Generic;
- 
+    using System.Linq;
+
     public class Matrix
     {
-        private bool[,] _matrix;
+        private readonly ICollection<Cell> _cells;
 
         public Matrix(int rows, int columns)
         {
-            _matrix = new bool[rows, columns];
+            Rows = rows;
+            Columns = columns;
+            int size = Rows * Columns;
+            _cells = new List<Cell>(size);
         }
 
-        public void Init(IEnumerable<(int x, int y)> initMatrix)
+        public int Rows { get; } // X direction
+
+        public int Columns { get; } // Y direction
+
+        public void Init(IEnumerable<Cell> initMatrix)
         {
-            Clear();
-            foreach ((int x, int y) in initMatrix)
+            _cells.Clear();
+            foreach (var cell in initMatrix)
             {
-                if (IsInMatrix(x, y))
-                    SetCell(x, y);
+                AddCell(cell);
             }
         }
 
-        public void SetCell(int x, int y)
+        public void AddCell(Cell cell)
         {
-            _matrix[x, y] = true;
-        }
-
-        public IEnumerable<(int x, int y, bool alive)> GetCells()
-        {
-            for (int i = 0; i < _matrix.GetLength(0); i++)
+            if (IsInMatrix(cell.X, cell.Y) && ContainsCell(cell) == false)
             {
-                for (int j = 0; j < _matrix.GetLength(1); j++)
-                {
-                    bool isAlive = IsAlive(i, j);
-                    yield return (i, j, isAlive);
-                }
+                _cells.Add(cell);
             }
         }
 
-        public IEnumerable<(int x, int y)> GetLivingCells()
+        public IEnumerable<Cell> GetLivingCells()
         {
-            foreach (var cell in GetCells())
-            {
-                if (cell.alive)
-                    yield return (cell.x, cell.y);
-            }
+            return _cells;
         }
 
-        public bool IsAlive(int x, int y)
+        public IEnumerable<Cell> GetNeighbours(Cell cell)
         {
-            return IsInMatrix(x, y) && _matrix[x, y];
+            int minX = cell.X - 1;
+            int maxX = cell.X + 1;
+            int minY = cell.Y - 1;
+            int maxY = cell.Y + 1;
+            return _cells.Where(c => c != cell
+                                     && c.X >= minX && c.X <= maxX
+                                     && c.Y >= minY && c.Y <= maxY);
         }
 
         public bool IsEmpty()
         {
-
-            for (int i = 0; i < _matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < _matrix.GetLength(1); j++)
-                {
-                    if (IsInMatrix(i,j) && _matrix[i, j])
-                            return false;
-                }
-            }
-
-            return true;
+            return _cells.Any() == false;
         }
 
         public bool IsInMatrix(int x, int y)
         {
-            return x >= 0 && y >= 0 && x < _matrix.GetLength(0) && y < _matrix.GetLength(1);
-        }
-
-        private void Clear()
-        {
-            _matrix = new bool[_matrix.GetLength(0), _matrix.GetLength(1)];
+            return x >= 0 && y >= 0 && x < Rows && y < Columns;
         }
 
         public Matrix EmptyClone()
         {
-            return new Matrix(_matrix.GetLength(0), _matrix.GetLength(1));
+            return new Matrix(Rows, Columns);
+        }
+
+        private bool ContainsCell(Cell cell)
+        {
+            return _cells.Any(c => c.X == cell.X && c.Y == cell.Y);
         }
     }
 }

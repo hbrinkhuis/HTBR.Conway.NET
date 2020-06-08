@@ -2,6 +2,9 @@ namespace Conway.Engine.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MatrixInitializationTests
     {
@@ -22,7 +25,7 @@ namespace Conway.Engine.Tests
         [Test]
         public void SetCell_NoLongerEmpty()
         {
-            _matrix.SetCell(0, 0);
+            _matrix.AddCell(new Cell(0, 0));
 
             _matrix.IsEmpty().Should().BeFalse();
         }
@@ -30,44 +33,43 @@ namespace Conway.Engine.Tests
         [Test]
         public void SetCell_CellSetCorrectly()
         {
-            _matrix.SetCell(0, 0);
+            _matrix.AddCell(new Cell(0, 0));
 
-            _matrix.IsAlive(0, 0).Should().BeTrue();
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(0, 0));
         }
 
         [Test]
         public void Init_CellsSetCorrectly()
         {
-            (int, int)[] initMatrix =
+            IEnumerable<Cell> initMatrix = new [] 
             {
-                (1, 2),
-                (1, 0),
-                (25, 4),
-                (-1, 1)
+                new Cell(1, 2),
+                new Cell(1, 0),
+                new Cell(25, 4),
+                new Cell(-1, 1)
             };
             _matrix.Init(initMatrix);
 
-            _matrix.IsAlive(1, 2).Should().BeTrue();
-            _matrix.IsAlive(1, 0).Should().BeTrue();
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(1,2), new Cell(1,0));
         }
 
         [Test]
         public void Clone_IsAClone()
         {
-            (int, int)[] initMatrix = new[]
+            IEnumerable<Cell> initMatrix = new[]
             {
-                (1, 2),
-                (1, 0),
-                (25, 4),
-                (-1, 1)
+                new Cell(1, 2), 
+                new Cell(1, 0), 
+                new Cell(25, 4),
+                new Cell(-1, 1)
             };
             _matrix.Init(initMatrix);
 
             var clone = _matrix.EmptyClone();
             clone.GetLivingCells().Should().BeEmpty();
 
-            clone.SetCell(1,1);
-            _matrix.IsAlive(1, 1).Should().BeFalse();
+            clone.AddCell(new Cell(1,1));
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(1, 2), new Cell(1, 0));
         }
 
         [Test]
@@ -90,23 +92,16 @@ namespace Conway.Engine.Tests
         {
             // we'll use a glider for this
             _matrix = new Matrix(10, 10);
-
-            _matrix.SetCell(1, 0);
-
-            _matrix.SetCell(2, 1);
-
-            _matrix.SetCell(0, 2);
-            _matrix.SetCell(1, 2);
-            _matrix.SetCell(2, 2);
-
-            _matrix.GetLivingCells().Should().BeEquivalentTo(new[]
+            _matrix.Init(new[]
             {
-                (1, 0),
-                (2, 1),
-                (0, 2),
-                (1, 2),
-                (2, 2),
+                new Cell(1, 0),
+                new Cell(2, 1),
+                new Cell(0, 2),
+                new Cell(1, 2),
+                new Cell(2, 2),
             });
+
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(1, 0), new Cell(2, 1), new Cell(0, 2), new Cell(1, 2), new Cell(2, 2));
         }
     }
 }

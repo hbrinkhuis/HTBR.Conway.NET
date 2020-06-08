@@ -1,5 +1,7 @@
 namespace Conway.Engine.Tests
 {
+    using System.Linq;
+
     public class FrameGenerator
     {
         private readonly Matrix _matrix;
@@ -16,39 +18,21 @@ namespace Conway.Engine.Tests
         {
             var nextFrame = _matrix.EmptyClone();
 
-            // check living cells
-            foreach ((int x, int y, bool _) in _matrix.GetCells())
+            foreach (var cell in _matrix.GetLivingCells())
             {
-                if(WillBeAlive(x, y))
-                    nextFrame.SetCell(x, y);
+                if(WillStayAlive(cell))
+                    nextFrame.AddCell(cell);
             }
+
+            // check areas around living cells with fertility matrix
+
             _matrix.Init(nextFrame.GetLivingCells());
         }
 
-        public bool WillBeAlive(int x, int y)
+        public bool WillStayAlive(Cell cell)
         {
-            int numberOfLivingNeighbours = NumberOfLivingNeighbours(x, y);
-            if (_matrix.IsAlive(x, y))
-            {
-                return numberOfLivingNeighbours > TooLittleNeighboursToStayAlive && numberOfLivingNeighbours < TooManyNeighboursToStayAlive;
-            }
-
-            return numberOfLivingNeighbours == NumberOfNeighboursToBecomeAlive;
-        }
-
-        private int NumberOfLivingNeighbours(int x, int y)
-        {
-            int numberOfNeighbours = 0;
-            for (int i = x - 1; i < x + 2; i++)
-            {
-                for (int j = y - 1; j < y + 2; j++)
-                {
-                    if (_matrix.IsInMatrix(i, j) && _matrix.IsAlive(i, j) && !(i == x && j == y))
-                        numberOfNeighbours++;
-                }
-            }
-
-            return numberOfNeighbours;
+            int numberOfLivingNeighbours = _matrix.GetNeighbours(cell).Count();
+            return numberOfLivingNeighbours > TooLittleNeighboursToStayAlive && numberOfLivingNeighbours < TooManyNeighboursToStayAlive;
         }
     }
 }
