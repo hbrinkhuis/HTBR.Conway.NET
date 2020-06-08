@@ -8,14 +8,55 @@ namespace Conway.Engine.Tests
     [TestFixture]
     public class FrameGeneratorTests
     {
+        private Matrix _matrix;
+        private FrameGenerator _sut;
+
+        [SetUp]
+        public void Setup()
+        {
+            _matrix = new Matrix(1000, 1000); 
+            _sut = new FrameGenerator(_matrix);
+        }
+
         [Test]
         public void TestFrameGeneration()
         {
-            var matrix = new Matrix(10,10);
-            var sut = new FrameGenerator(matrix);
+            InitGlider();
+            
+            _sut.ApplyNextFrame();
 
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(0, 1), new Cell(2, 1), new Cell(1, 2), new Cell(2, 2), new Cell(1, 3));
+        }
+
+        [Test]
+        [Repeat(5)]
+        public void PerformanceTest_EmptyFrame()
+        {
+            ApplyFramesAndLog(60);
+            _matrix.IsEmpty().Should().BeTrue();
+        }
+
+        [Test]
+        [Repeat(5)]
+        public void PerformanceTest_Glider()
+        {
+            InitGlider();
+            ApplyFramesAndLog(60);
+            _matrix.GetLivingCells().Should().HaveCount(5);
+            _matrix.GetLivingCells().Should().BeEquivalentTo(new List<Cell>
+            {
+                new Cell(16, 15),
+                new Cell(17, 16),
+                new Cell(0, 2),
+                new Cell(1, 2),
+                new Cell(2, 2)
+            })
+        }
+
+        private void InitGlider()
+        {
             // init matrix with glider
-            matrix.Init(new List<Cell>
+            _matrix.Init(new List<Cell>
             {
                 new Cell(1, 0),
                 new Cell(2, 1),
@@ -23,27 +64,18 @@ namespace Conway.Engine.Tests
                 new Cell(1, 2),
                 new Cell(2, 2)
             });
-
-            sut.ApplyNextFrame();
-
-            matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(0, 1), new Cell(2, 1), new Cell(1, 2), new Cell(2, 2), new Cell(1, 3));
         }
 
-        [Test]
-        [Repeat(5)]
-        public void PerformanceTest_EmptyFrame()
+        private void ApplyFramesAndLog(int numberOfFrames)
         {
-            var matrix = new Matrix(1000, 1000);
-
-            var sut = new FrameGenerator(matrix);
-            Stopwatch s = new Stopwatch();
+            var s = new Stopwatch();
             s.Start();
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < numberOfFrames; i++)
             {
-                sut.ApplyNextFrame();
+                _sut.ApplyNextFrame();
             }
             s.Stop();
-            TestContext.Out.WriteLine($"Elapsed ms for {60} empty frames: {s.ElapsedMilliseconds}");
+            TestContext.Out.WriteLine($"Elapsed ms for {numberOfFrames} frames: {s.ElapsedMilliseconds}");
         }
     }
 }
