@@ -1,13 +1,12 @@
 namespace Conway.Engine.Tests
 {
-    using AutoFixture;
     using FluentAssertions;
     using NUnit.Framework;
     using System.Collections.Generic;
     using System.Diagnostics;
 
     [TestFixture]
-    public class MatrixGenerationTests
+    public class FrameGeneratorTests
     {
         [Test]
         public void TestFrameGeneration()
@@ -30,7 +29,6 @@ namespace Conway.Engine.Tests
             matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(0, 1), new Cell(2, 1), new Cell(1, 2), new Cell(2, 2), new Cell(1, 3));
         }
 
-        [Test]
         public void PerformanceTest_EmptyFrame()
         {
             var matrix = new Matrix(1000, 1000);

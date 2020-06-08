@@ -5,7 +5,6 @@ namespace Conway.Engine.Tests
     public class FrameGenerator
     {
         private readonly Matrix _matrix;
-        private const int NumberOfNeighboursToBecomeAlive = 3;
         private const int TooLittleNeighboursToStayAlive = 1;
         private const int TooManyNeighboursToStayAlive = 4;
 
@@ -25,6 +24,11 @@ namespace Conway.Engine.Tests
             }
 
             // check areas around living cells with fertility matrix
+            var fertilityMatrix = new FertilityMatrix(_matrix);
+            foreach (var sprout in fertilityMatrix.GetSprouts())
+            {
+                nextFrame.AddCell(sprout);
+            }
 
             _matrix.Init(nextFrame.GetLivingCells());
         }

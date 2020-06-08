@@ -2,11 +2,9 @@ namespace Conway.Engine.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
-    public class MatrixInitializationTests
+    public class MatrixTests
     {
         private Matrix _matrix;
 
