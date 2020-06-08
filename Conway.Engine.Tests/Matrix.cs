@@ -36,6 +36,14 @@ namespace Conway.Engine.Tests
             }
         }
 
+        public void AddCells(IEnumerable<Cell> cells)
+        {
+            foreach (var cell in cells)
+            {
+                AddCell(cell);
+            }
+        }
+
         public IEnumerable<Cell> GetLivingCells()
         {
             return _cells;

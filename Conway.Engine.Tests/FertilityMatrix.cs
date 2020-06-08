@@ -14,13 +14,12 @@
             ApplyFertilityIndex(matrix.GetLivingCells());
         }
 
-
         private void ApplyFertilityIndex(IEnumerable<Cell> cells)
         {
             foreach (var cell in cells)
             {
-                int iStart = Math.Abs(cell.X - 1);
-                int jStart = Math.Abs(cell.Y - 1);
+                int iStart = Math.Max(0, cell.X - 1);
+                int jStart = Math.Max(0, cell.Y - 1);
                 int iEnd = Math.Min(cell.X + 1, _fertility.GetLength(0) - 1);
                 int jEnd = Math.Min(cell.Y + 1, _fertility.GetLength(1) - 1);
 

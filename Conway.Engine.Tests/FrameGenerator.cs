@@ -16,6 +16,7 @@ namespace Conway.Engine.Tests
         public void ApplyNextFrame()
         {
             var nextFrame = _matrix.EmptyClone();
+            var fertilityMatrix = new FertilityMatrix(_matrix);
 
             foreach (var cell in _matrix.GetLivingCells())
             {
@@ -23,12 +24,7 @@ namespace Conway.Engine.Tests
                     nextFrame.AddCell(cell);
             }
 
-            // check areas around living cells with fertility matrix
-            var fertilityMatrix = new FertilityMatrix(_matrix);
-            foreach (var sprout in fertilityMatrix.GetSprouts())
-            {
-                nextFrame.AddCell(sprout);
-            }
+            nextFrame.AddCells(fertilityMatrix.GetSprouts());
 
             _matrix.Init(nextFrame.GetLivingCells());
         }

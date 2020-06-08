@@ -29,6 +29,8 @@ namespace Conway.Engine.Tests
             matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(0, 1), new Cell(2, 1), new Cell(1, 2), new Cell(2, 2), new Cell(1, 3));
         }
 
+        [Test]
+        [Repeat(5)]
         public void PerformanceTest_EmptyFrame()
         {
             var matrix = new Matrix(1000, 1000);
@@ -41,7 +43,7 @@ namespace Conway.Engine.Tests
                 sut.ApplyNextFrame();
             }
             s.Stop();
-            TestContext.Out.WriteLine($"Elapsed ms for {60} frames: {s.ElapsedMilliseconds}");
+            TestContext.Out.WriteLine($"Elapsed ms for {60} empty frames: {s.ElapsedMilliseconds}");
         }
     }
 }
