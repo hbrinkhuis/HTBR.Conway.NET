@@ -1,4 +1,4 @@
-namespace Conway.Engine.Tests
+namespace Conway.Engine
 {
     using System.Collections.Generic;
     using System.Linq;

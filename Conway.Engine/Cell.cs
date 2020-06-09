@@ -1,4 +1,4 @@
-namespace Conway.Engine.Tests
+namespace Conway.Engine
 {
     public class Cell
     {
