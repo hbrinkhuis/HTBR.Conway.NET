@@ -19,7 +19,7 @@
             <Label Content="{Binding Columns}"/>
         </StackPanel>
 
-        <Canvas Grid.Row="1" Background="DarkGray">
+        <Canvas x:Name="ConwayCanvas" Grid.Row="1" Background="DarkGray" MouseDown="UIElement_OnMouseDown">
             
         </Canvas>
     </Grid>
