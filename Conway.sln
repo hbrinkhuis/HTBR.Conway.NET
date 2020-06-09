@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conway.Engine.Tests", "Conway.Engine.Tests\Conway.Engine.Tests.csproj", "{B0494C35-E3B7-48F3-8335-EC139C305988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conway.Engine", "Conway.Engine\Conway.Engine.csproj", "{D6A5FB21-8A51-4EDE-88C3-C6AEF01DA9D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conway.Engine", "Conway.Engine\Conway.Engine.csproj", "{D6A5FB21-8A51-4EDE-88C3-C6AEF01DA9D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{74408D64-F225-4AF0-A02A-B35D7D9CE4DF}"
 EndProject
