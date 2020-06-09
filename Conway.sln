@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conway.Engine", "Conway.Eng
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{74408D64-F225-4AF0-A02A-B35D7D9CE4DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conway.UI", "Conway.UI\Conway.UI.csproj", "{FD971527-63FA-4A10-825D-5D1CDE82A611}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +23,6 @@ Global
 		{D6A5FB21-8A51-4EDE-88C3-C6AEF01DA9D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A5FB21-8A51-4EDE-88C3-C6AEF01DA9D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A5FB21-8A51-4EDE-88C3-C6AEF01DA9D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD971527-63FA-4A10-825D-5D1CDE82A611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD971527-63FA-4A10-825D-5D1CDE82A611}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD971527-63FA-4A10-825D-5D1CDE82A611}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD971527-63FA-4A10-825D-5D1CDE82A611}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
