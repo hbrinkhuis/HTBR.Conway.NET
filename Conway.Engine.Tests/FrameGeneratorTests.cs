@@ -47,10 +47,10 @@ namespace Conway.Engine.Tests
             {
                 new Cell(16, 15),
                 new Cell(17, 16),
-                new Cell(0, 2),
-                new Cell(1, 2),
-                new Cell(2, 2)
-            })
+                new Cell(15, 17),
+                new Cell(16, 17),
+                new Cell(17, 17)
+            });
         }
 
         private void InitGlider()
