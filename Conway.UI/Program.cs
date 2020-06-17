@@ -1,6 +1,5 @@
 ﻿namespace Conway.UI
 {
-    using Engine;
     using NLog;
     using SimpleInjector;
     using System;

@@ -1,35 +1,72 @@
 ﻿namespace Conway.UI
 {
-    using System.ComponentModel;
+    using System;
+    using System.Collections.Generic;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Shapes;
+    using System.Windows.Threading;
 
     public partial class MainWindow
     {
+        private readonly ICollection<Rectangle> _cells = new List<Rectangle>();
+        private readonly MainWindowViewModel _vm;
+
         public MainWindow()
         {
-            var vm = new MainWindowViewModel();
-            DataContext = vm;
+            _vm = new MainWindowViewModel();
+            DataContext = _vm;
             InitializeComponent();
-            DrawGrid(vm);
+            DrawGrid(_vm);
+            _vm.FrameChanged += FrameChanged;
         }
 
-        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void FrameChanged(object sender, EventArgs e)
         {
-            var vm = (DataContext as MainWindowViewModel);
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var cell in _cells)
+                    ConwayCanvas.Children.Remove(cell);
 
+                _cells.Clear();
+
+                foreach (var cell in _vm.Cells)
+                {
+                    int x = cell.X * _vm.SquareSize;
+                    int y = cell.Y * _vm.SquareSize;
+
+                    DrawRectangle(x, y);
+                }
+            });
+        }
+
+        private void Canvas_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var p = e.GetPosition(ConwayCanvas);
+
+            int x = (int) p.X / _vm.SquareSize * _vm.SquareSize;
+            int y = (int) p.Y / _vm.SquareSize * _vm.SquareSize;
+
+            DrawRectangle(x, y);
+
+            _vm.ToggleCellCommand.Execute(p);
+        }
+
+        private void DrawRectangle(int x, int y)
+        {
             var rect = new Rectangle
             {
                 Stroke = Brushes.Yellow,
                 StrokeThickness = 1,
                 Fill = Brushes.Yellow,
-                Width = vm.SquareSize,
-                Height = vm.SquareSize
+                Width = _vm.SquareSize,
+                Height = _vm.SquareSize
             };
-            Canvas.SetLeft(rect, 0);
-            Canvas.SetTop(rect, 0);
+            Canvas.SetLeft(rect, x);
+            Canvas.SetTop(rect, y);
+
+            _cells.Add(rect);
 
             ConwayCanvas.Children.Add(rect);
         }
@@ -49,8 +86,6 @@
                     X2 = vm.Columns * vm.SquareSize,
                     Y2 = y,
                 };
-                Canvas.SetLeft(line, 0);
-                Canvas.SetTop(line, 0);
 
                 ConwayCanvas.Children.Add(line);
             }
@@ -67,11 +102,10 @@
                     X2 = x,
                     Y2 = vm.Rows * vm.SquareSize,
                 };
-                Canvas.SetLeft(line, 0);
-                Canvas.SetTop(line, 0);
 
                 ConwayCanvas.Children.Add(line);
             }
         }
+
     }
 }

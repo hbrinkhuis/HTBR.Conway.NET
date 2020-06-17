@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Conway.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
+        Title="Conway's Game of Life" Height="450" Width="800" d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
@@ -20,13 +20,15 @@
             <Label Content="{Binding Columns}"/>
         </StackPanel>
 
-        <Canvas x:Name="ConwayCanvas" Grid.Row="1" Background="DarkGray" MouseDown="UIElement_OnMouseDown"/>
+        <Canvas x:Name="ConwayCanvas" Grid.Row="1" Background="DarkGray" MouseDown="Canvas_OnMouseDown"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Background="White">
-            <Label>Canvas width:</Label>
-            <Label Content="{Binding ElementName=ConwayCanvas, Path=ActualWidth}"/>
-            <Label>Canvas height:</Label>
-            <Label Content="{Binding ElementName=ConwayCanvas, Path=ActualHeight}"/>
+            <Button Margin="5" Command="{Binding StartLifeCommand}" Content="Start"/>
+            <Button Margin="5" Command="{Binding ResetCommand}" Content="Reset"/>
+            <Label>Number of cells:</Label>
+            <Label Content="{Binding NumberOfCells}"/>
+            <Label>Generation:</Label>
+            <Label Content="{Binding Generation}"/>
         </StackPanel>
     </Grid>
 </Window>
