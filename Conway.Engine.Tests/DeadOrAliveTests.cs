@@ -28,13 +28,13 @@ namespace Conway.Engine.Tests
         }
 
         [Test]
-        public void DeadWithoutNeighbours_StillDead()
+        public void DeadWithoutNeighbors_StillDead()
         {
             ReturnStatusOfCenterCell().Should().BeFalse();
         }
 
         [Test]
-        public void DeadWithThreeNeighbours_Alive()
+        public void DeadWithThreeNeighbors_Alive()
         {
             _matrix.AddCell(new Cell(0, 0));
             _matrix.AddCell(new Cell(0, 1));
@@ -43,10 +43,10 @@ namespace Conway.Engine.Tests
             ReturnStatusOfCenterCell().Should().BeTrue();
         }
 
-        [TestCaseSource(typeof(NeighbourCases), nameof(NeighbourCases.TooLittleNeighbours))]
-        public bool AliveWithTooFewNeighbours_Dies(ICollection<Cell> neighbours)
+        [TestCaseSource(typeof(NeighborCases), nameof(NeighborCases.TooFewNeighbors))]
+        public bool AliveWithTooFewNeighbours_Dies(ICollection<Cell> neighbors)
         {
-            SetCells(neighbours);
+            SetCells(neighbors);
 
             _matrix.AddCell(_centerCell);
 
@@ -54,10 +54,10 @@ namespace Conway.Engine.Tests
         }
 
 
-        [TestCaseSource(typeof(NeighbourCases), nameof(NeighbourCases.TooMuchNeighbours))]
-        public bool AliveWithTooManyNeighbours_Dies(ICollection<Cell> neighbours)
+        [TestCaseSource(typeof(NeighborCases), nameof(NeighborCases.TooMuchNeighbors))]
+        public bool AliveWithTooManyNeighbors_Dies(ICollection<Cell> neighbors)
         {
-            SetCells(neighbours);
+            SetCells(neighbors);
 
             _matrix.AddCell(_centerCell);
 
@@ -65,20 +65,29 @@ namespace Conway.Engine.Tests
         }
 
 
-        private class NeighbourCases
+        private class NeighborCases
         {
-            public static IEnumerable TooLittleNeighbours
+            // returns 0 neighbors, and 1 neighbor (every possibility in a 3x3 matrix)
+            public static IEnumerable TooFewNeighbors
             {
                 get
                 {
-                    // TODO yeah let's refactor this
-                    yield return new TestCaseData(new List<Cell>()).Returns(false);
-                    yield return new TestCaseData(new List<Cell> {new Cell(0, 1)}).Returns(false);
-                    yield return new TestCaseData(new List<Cell> {new Cell(2, 0)}).Returns(false);
+                    // 0 neighbors case
+                    yield return new TestCaseData(new List<Cell>()).Returns(false).SetArgDisplayNames("Empty");
+
+                    // 1 neighbor case
+                    for (int i = 0; i < 3; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            var cell = new Cell(i, j);
+                            yield return new TestCaseData(new List<Cell> { cell }).Returns(false).SetArgDisplayNames(cell.X.ToString(), cell.Y.ToString());
+                        }
+                    }
                 }
             }
 
-            public static IEnumerable TooMuchNeighbours
+            public static IEnumerable TooMuchNeighbors
             {
                 get
                 {

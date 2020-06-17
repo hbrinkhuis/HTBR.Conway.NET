@@ -31,8 +31,8 @@ namespace Conway.Engine
 
         public bool WillStayAlive(Cell cell)
         {
-            int numberOfLivingNeighbours = _matrix.GetNeighbours(cell).Count();
-            return numberOfLivingNeighbours > TooLittleNeighboursToStayAlive && numberOfLivingNeighbours < TooManyNeighboursToStayAlive;
+            int numberOfLivingNeighbors = _matrix.GetNeighbors(cell).Count();
+            return numberOfLivingNeighbors > TooLittleNeighboursToStayAlive && numberOfLivingNeighbors < TooManyNeighboursToStayAlive;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Conway.Engine
             return _cells;
         }
 
-        public IEnumerable<Cell> GetNeighbours(Cell cell)
+        public IEnumerable<Cell> GetNeighbors(Cell cell)
         {
             int minX = cell.X - 1;
             int maxX = cell.X + 1;
