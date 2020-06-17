@@ -5,8 +5,8 @@ namespace Conway.Engine
     public class FrameGenerator
     {
         private readonly Matrix _matrix;
-        private const int TooLittleNeighboursToStayAlive = 1;
-        private const int TooManyNeighboursToStayAlive = 4;
+        private const int TooLittleNeighborsToStayAlive = 1;
+        private const int TooManyNeighborsToStayAlive = 4;
 
         public FrameGenerator(Matrix matrix)
         {
@@ -32,7 +32,7 @@ namespace Conway.Engine
         public bool WillStayAlive(Cell cell)
         {
             int numberOfLivingNeighbors = _matrix.GetNeighbors(cell).Count();
-            return numberOfLivingNeighbors > TooLittleNeighboursToStayAlive && numberOfLivingNeighbors < TooManyNeighboursToStayAlive;
+            return numberOfLivingNeighbors > TooLittleNeighborsToStayAlive && numberOfLivingNeighbors < TooManyNeighborsToStayAlive;
         }
     }
 }
