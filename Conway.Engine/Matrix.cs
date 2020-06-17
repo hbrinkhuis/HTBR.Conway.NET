@@ -31,9 +31,7 @@ namespace Conway.Engine
         public void AddCell(Cell cell)
         {
             if (IsInMatrix(cell.X, cell.Y) && ContainsCell(cell) == false)
-            {
                 _cells.Add(cell);
-            }
         }
 
         public void AddCells(IEnumerable<Cell> cells)
@@ -75,9 +73,17 @@ namespace Conway.Engine
             return new Matrix(Rows, Columns);
         }
 
-        private bool ContainsCell(Cell cell)
+        public bool ContainsCell(Cell cell)
         {
             return _cells.Any(c => c.X == cell.X && c.Y == cell.Y);
+        }
+
+        public void RemoveCell(Cell cell)
+        {
+            if (IsInMatrix(cell.X, cell.Y) && ContainsCell(cell))
+            {
+                _cells.Remove(_cells.First(c => c.X == cell.X && c.Y == cell.Y));
+            }
         }
     }
 }

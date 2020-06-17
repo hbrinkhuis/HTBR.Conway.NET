@@ -2,6 +2,7 @@ namespace Conway.Engine.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
+    using System;
     using System.Collections.Generic;
 
     public class MatrixTests
@@ -21,7 +22,7 @@ namespace Conway.Engine.Tests
         }
 
         [Test]
-        public void SetCell_NoLongerEmpty()
+        public void AddCell_NoLongerEmpty()
         {
             _matrix.AddCell(new Cell(0, 0));
 
@@ -29,11 +30,42 @@ namespace Conway.Engine.Tests
         }
 
         [Test]
-        public void SetCell_CellSetCorrectly()
+        public void AddCell_CellSetCorrectly()
         {
             _matrix.AddCell(new Cell(0, 0));
 
             _matrix.GetLivingCells().Should().BeEquivalentTo(new Cell(0, 0));
+        }
+
+        [Test]
+        public void RemoveCell_CellRemovedCorrectly()
+        {
+            _matrix.AddCell(new Cell(0, 0));
+
+            _matrix.RemoveCell(new Cell(0, 0));
+
+            _matrix.IsEmpty().Should().BeTrue();
+        }
+
+        [Test]
+        public void RemoveCell_NonExistent_DoesNotThrow()
+        {
+            _matrix.AddCell(new Cell(0, 1));
+
+            Action a = () => _matrix.RemoveCell(new Cell(1, 0));
+
+            a.Should().NotThrow();
+
+            _matrix.GetLivingCells().Should().HaveCount(1);
+        }
+
+        [Test]
+        public void ContainsCell_ShouldShow()
+        {
+            _matrix.AddCell(new Cell(0, 1));
+
+            _matrix.ContainsCell(new Cell(0, 1)).Should().BeTrue();
+            _matrix.ContainsCell(new Cell(1, 1)).Should().BeFalse();
         }
 
         [Test]
