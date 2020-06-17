@@ -14,5 +14,7 @@
         public int Rows { get; } = 1000;
 
         public int Columns { get; } = 1000;
+
+        public int SquareSize { get; } = 25;
     }
 }

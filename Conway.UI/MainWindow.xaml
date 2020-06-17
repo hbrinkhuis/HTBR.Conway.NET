@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="36"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
@@ -19,8 +20,13 @@
             <Label Content="{Binding Columns}"/>
         </StackPanel>
 
-        <Canvas x:Name="ConwayCanvas" Grid.Row="1" Background="DarkGray" MouseDown="UIElement_OnMouseDown">
-            
-        </Canvas>
+        <Canvas x:Name="ConwayCanvas" Grid.Row="1" Background="DarkGray" MouseDown="UIElement_OnMouseDown"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Background="White">
+            <Label>Canvas width:</Label>
+            <Label Content="{Binding ElementName=ConwayCanvas, Path=ActualWidth}"/>
+            <Label>Canvas height:</Label>
+            <Label Content="{Binding ElementName=ConwayCanvas, Path=ActualHeight}"/>
+        </StackPanel>
     </Grid>
 </Window>
